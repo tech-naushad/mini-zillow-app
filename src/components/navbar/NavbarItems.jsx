@@ -24,7 +24,7 @@ const solutions = [
     name: "Manage Property Listing",
     description:
       "Manage Property Listing lets admins edit and control property listings.",
-    href: "#",
+    href: "/admin/dashboard",
     icon: WrenchScrewdriverIcon, // 🛠 Perfect for admin/manage
   },
 ];

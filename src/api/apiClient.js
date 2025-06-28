@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5001/api/' 
+  baseURL: 'https://property-service-raoo.onrender.com/api/' 
 //   headers: {
 //     'Content-Type': 'application/json',
 //   },
