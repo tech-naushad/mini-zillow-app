@@ -1,46 +1,46 @@
 // src/components/Navbar/Navbar.jsx
-import React, { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import NavBarItems from "./NavbarItems";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navItems = ['Buy', 'Rent', 'Sell', 'Home Loans', 'Agent Finder'];
+  //const navItems = ["Buy", "Rent", "Sell", "Home Loans", "Agent Finder"];
 
   return (
+    <>
     <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0 text-blue-600 text-2xl font-bold">
-            <a href="/">Zillow</a>
+            <a href="/">Mini-Zillow</a>
           </div>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            {navItems.map((item) => (
+            {/* {navItems.map((item) => (
               <a
                 key={item}
-                href={`/${item.toLowerCase().replace(/ /g, '-')}`}
+                href={`/${item.toLowerCase().replace(/ /g, "-")}`}
                 className="text-gray-700 hover:text-blue-600 transition font-medium"
               >
                 {item}
               </a>
-            ))}
+            ))} */}
+            <NavBarItems></NavBarItems>
           </div>
-
-          {/* Search + User */}
+          
           <div className="hidden md:flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Search"
-              className="px-3 py-1.5 border rounded-lg text-sm outline-blue-500"
-            />
-            <img
-              src="https://i.pravatar.cc/32"
-              alt="user"
-              className="rounded-full w-8 h-8 cursor-pointer"
-            />
+            <NavLink
+              to="/auth/login"
+              className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
+            >
+              Sign In
+            </NavLink>
           </div>
 
           {/* Mobile Toggle */}
@@ -59,21 +59,19 @@ const Navbar = () => {
             {navItems.map((item) => (
               <a
                 key={item}
-                href={`/${item.toLowerCase().replace(/ /g, '-')}`}
+                href={`/${item.toLowerCase().replace(/ /g, "-")}`}
                 className="text-gray-700 hover:text-blue-600 transition font-medium"
               >
                 {item}
               </a>
-            ))}
-            <input
-              type="text"
-              placeholder="Search"
-              className="mt-2 px-3 py-1.5 border rounded-lg text-sm outline-blue-500"
-            />
+            ))}            
           </div>
         </div>
       )}
     </nav>
+      {/* This is where child routes will be rendered */}
+      <Outlet />
+      </>
   );
 };
 

@@ -3,12 +3,15 @@ import React, { useState,useEffect  } from 'react';
 import { FiMapPin, FiHome, FiStar } from 'react-icons/fi';
 import MZImageZoom from '../../../../components/zoom/MZImageZoom';
 import apiClient from '../../../../api/apiClient';
+import { useLocation } from "react-router-dom";
 
 const PropertyDetails = () => {
     const [property, setProperty] = useState([]);
 const [loading, setLoading ] = useState(false);
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
  // Replace with actual ID or get from URL params
-  const propertyId = '685f904805f1af8db753c3fe';
+   const propertyId = queryParams.get("id");
   
   const fetchProperty = async()=>{
     try {

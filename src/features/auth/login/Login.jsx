@@ -1,12 +1,14 @@
 import React, { use, useState } from "react";
 import apiClient from "../../../api/apiClient";
+import { NavLink } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [formData, setFormData] = useState({   
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
+const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -21,10 +23,11 @@ const Login = () => {
       const response = await apiClient.post("/users/login", formData, {
         baseURL: "http://localhost:5000/api/",
       });
+      navigate('/');
     } catch (error) {
       console.error("Signup error:", error);
     } finally {
-      setFormData({      
+      setFormData({
         email: "",
         password: "",
       });
@@ -36,8 +39,7 @@ const Login = () => {
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Create an Account
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">      
-
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email */}
         <div>
           <label className="block mb-1 font-medium text-gray-700">Email</label>
@@ -79,9 +81,11 @@ const Login = () => {
 
       <p className="text-sm text-gray-600 text-center mt-4">
         Do not have an account?{" "}
-        <a href="/signup" className="text-blue-600 hover:underline">
-          Sign up
-        </a>
+        
+        <NavLink to="/auth/signup" className="text-blue-600 hover:underline">
+          Sign Up
+        </NavLink>
+        
       </p>
     </div>
   );

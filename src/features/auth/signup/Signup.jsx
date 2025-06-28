@@ -1,5 +1,10 @@
 import React, { use, useState } from "react";
 import apiClient from "../../../api/apiClient";
+import { NavLink } from "react-router-dom";
+import {
+  LoaderProvider,
+  useLoader,
+} from "../../../components/pageLoader/LoaderContext";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -7,7 +12,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
-
+  const { showLoader, hideLoader } = useLoader();
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -17,8 +22,9 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup Data:", formData);
+
     try {
+      showLoader();
       const response = await apiClient.post("/users/register", formData, {
         baseURL: "http://localhost:5000/api/",
       });
@@ -30,6 +36,7 @@ const Signup = () => {
         email: "",
         password: "",
       });
+      hideLoader();
     }
   };
 
@@ -94,9 +101,9 @@ const Signup = () => {
 
       <p className="text-sm text-gray-600 text-center mt-4">
         Already have an account?{" "}
-        <a href="/login" className="text-blue-600 hover:underline">
-          Log in
-        </a>
+        <NavLink to="/auth/login" className="text-blue-600 hover:underline">
+          Sign In
+        </NavLink>
       </p>
     </div>
   );

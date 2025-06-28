@@ -1,12 +1,12 @@
 import React, { use, useState, useEffect } from "react";
 import { FaBed, FaBath, FaRulerCombined, FaStar } from "react-icons/fa";
-import {
-  FiHeart,
-  FiMapPin,
-  FiChevronRight
-} from "react-icons/fi";
+import { FiHeart, FiMapPin, FiChevronRight } from "react-icons/fi";
 import apiClient from "../../../../api/apiClient";
-
+import {
+  LoaderProvider,
+  useLoader,
+} from "../../../../components/pageLoader/LoaderContext";
+import { NavLink } from "react-router-dom";
 
 const PropertyList = () => {
   const [properties, setProperties] = useState([]);
@@ -14,16 +14,18 @@ const PropertyList = () => {
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1); // current page
   const [totalPages, setTotalPages] = useState(1);
+  const { showLoader, hideLoader } = useLoader();
 
   const fetchProperties = async (pageNumber) => {
-    setLoading(true);
     try {
+      showLoader();
       const response = await apiClient.get(`/properties?page=${page}&limit=5`);
       setProperties(response.data.results);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       setError("Failed to fetch properties");
     } finally {
+      hideLoader();
       setLoading(false);
     }
   };
@@ -42,19 +44,21 @@ const PropertyList = () => {
             className="bg-white rounded-xl shadow hover:shadow-md transition p-3"
           >
             <div className="relative">
+             <NavLink to={`/property/details?id=${property?._id}`}>
               <img
                 src={property?.imageUrl}
                 alt={property?.title}
                 className="w-full h-48 object-cover rounded-lg"
               />
+              </NavLink>
               <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow text-gray-700 hover:text-red-500">
                 <FiHeart />
               </button>
             </div>
-            <div className="mt-4">              
+            <div className="mt-4">
               <div className="flex items-center text-sm text-gray-500 mt-1">
                 <FiChevronRight className="mr-1 text-red-500" />
-              <p className="text-gray-500">{property.title}</p>
+                <p className="text-gray-500">{property.title}</p>
                 {property.streetAddress}
               </div>
               <div className="flex items-center text-sm text-gray-500 mt-1">

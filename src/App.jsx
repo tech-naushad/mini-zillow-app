@@ -7,22 +7,36 @@ import Navbar from "./components/navbar/Navbar";
 import PropertyDetails from "./features/property/pages/property-details/PropertyDetails";
 import Signup from "./features/auth/signup/Signup";
 import Login from "./features/auth/login/Login";
-
+import PageLoader from "./components/pageLoader/MZPageLoader";
+import { LoaderProvider, useLoader } from "./components/pageLoader/LoaderContext"
+ 
 const App = () => {
   const [showRight, setShowRight] = useState(true);
 
+const GlobalLoader = () => {
+  const { loading } = useLoader();
+  return loading ? <PageLoader /> : null;
+};
+
   return (
     <>
-      <Navbar />
-      <div className="p-6 max-w-7xl mx-auto">
+      <LoaderProvider>      
+      <div className="m-4">
         <Router>
+          <GlobalLoader />
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/property" element={<PropertyList />} />
-            <Route path="/property/list" element={<PropertyList />} />
+            <Route path="/" element={<Navbar />}>
+              <Route path="/" element={<PropertyList />} />
+              <Route path="/property/list" element={<PropertyList />} />
+                  <Route path="/property/add" element={<AddProperty />} />
+              <Route path="/property/details" element={<PropertyDetails />} />
+              <Route path="auth/signup" element={<Signup />} />
+              <Route path="auth/login" element={<Login />} />
+            </Route>
           </Routes>
-        </Router>
-      </div>
+        </Router>    
+        </div>  
+        </LoaderProvider>  
     </>
   );
 };
