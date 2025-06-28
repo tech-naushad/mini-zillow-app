@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { FaDollarSign, FaBed, FaBath, FaExpand } from "react-icons/fa";
 import MZFileUpload from "../../../../components/fileUpload/MZFileUpload";
 import MZInput from "../../../../components/numberInput/MZInput";
-import apiClient from "../../../../api/apiClient"; // Adjust the import path as necessary
+import apiClient from "../../../../api/apiClient";  
 
 const AddProperty = () => {
   const [formData, setFormData] = useState({ price: "", baths: "" });
@@ -28,7 +28,6 @@ const AddProperty = () => {
   };
 
   const AddProperty = () => {
-    debugger;
     var propertyDetails = {
       title: titleInputRef.current.value,
       streetAddress: streetAddressInputRef.current.value,
