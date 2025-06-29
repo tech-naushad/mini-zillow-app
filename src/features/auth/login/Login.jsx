@@ -23,6 +23,7 @@ const Login = () => {
         email: emailInputRef.current?.value,
         password: passwordInputRef.current?.value,
       };
+      showLoader();
       const response = await apiClient.post("/users/login", formData, {
         baseURL: apiBaseUrl,
       });
@@ -31,14 +32,16 @@ const Login = () => {
       const token = response.data.token;      
       sessionStorage.setItem("token", token);
 
-      setMessage({ type: "success", text: "Account created successfully!" });
+      setMessage({ type: "success", text: "Logged In successfully!" });
        window.location.href = "/";
     } catch (error) {
       console.error("Signup error:", error);
       setMessage({
         type: "error",
-        text: "Failed to sign up. Please try again.",
+        text: "Failed to login. Please try again.",
       });
+    } finally{
+      hideLoader();
     }
   };
 
