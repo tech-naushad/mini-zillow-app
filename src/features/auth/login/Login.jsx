@@ -32,7 +32,7 @@ const Login = () => {
       sessionStorage.setItem("token", token);
 
       setMessage({ type: "success", text: "Account created successfully!" });
-      navigate("/");
+       window.location.href = "/";
     } catch (error) {
       console.error("Signup error:", error);
       setMessage({

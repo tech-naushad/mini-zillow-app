@@ -36,18 +36,9 @@ const Navbar = () => {
                   Sign In
                 </NavLink>
               ) : (
-                <UserProfileMenu name={decoded?.name} />
+                <UserProfileMenu name={decoded?.payload.name} />
               )}
-            </div>
-
-            {/* <div className="hidden md:flex items-center space-x-4">
-              <NavLink
-                to="/auth/login"
-                className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
-              >
-                {decoded === null ? "Sign In" : decoded?.name}
-              </NavLink>
-            </div> */}
+            </div>           
 
             {/* Mobile Toggle */}
             <div className="md:hidden">

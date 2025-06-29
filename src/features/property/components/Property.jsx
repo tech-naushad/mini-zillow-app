@@ -12,10 +12,10 @@ const Property = ({ property, showDelete = false }) => {
 
   const handleDelete = async (id) => {
     try {
-      showLoader();      
-      const response = await apiClient.delete(`/properties/${id}`, {
-      });
+      showLoader();
+      const response = await apiClient.delete(`/properties/${id}`, {});
       setMessage({ type: "success", text: "Property deleted successfully!" });
+      window.location.reload();
     } catch (error) {
       console.error("error:", error);
       setMessage({
@@ -29,10 +29,6 @@ const Property = ({ property, showDelete = false }) => {
 
   return (
     <>
-  
-              {/* {message.text && <MZMessage type={message.type} message={message.text} />} */}
-
-     
       <div className="bg-white rounded-xl shadow p-4">
         <NavLink to={`/property/details?id=${property?._id}`}>
           <img

@@ -16,6 +16,7 @@ import Dashboard from "./features/admin/pages/Dashboard";
 import AdminLogin from "./features/admin/pages/AdminLogin";
 import AuthRouteGaurd from "./features/shared/AuthRouteGaurd";
 import ManageListing from "./features/admin/pages/ManageListing";
+import MyListing from "./features/property/pages/my-listing/MyListing";
 
 const App = () => {
   const [showRight, setShowRight] = useState(true);
@@ -43,6 +44,7 @@ const App = () => {
                     </AuthRouteGaurd>
                   }
                 />
+                 <Route path="property/mylisting" element={<MyListing />} />
                 <Route path="property/details" element={<PropertyDetails />} />
                 <Route path="auth/signup" element={<Signup />} />
                 <Route path="auth/login" element={<Login />} />

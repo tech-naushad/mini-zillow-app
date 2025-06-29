@@ -11,11 +11,12 @@ const PropertyList = () => {
   const [page, setPage] = useState(1); // current page
   const [totalPages, setTotalPages] = useState(1);
   const { showLoader, hideLoader } = useLoader();
+  const pageSize = 9;
 
   const fetchProperties = async (pageNumber) => {
     try {
       showLoader();
-      const response = await apiClient.get(`/properties?page=${page}&limit=5`);
+      const response = await apiClient.get(`/properties?page=${page}&limit=${pageSize}`);
       setProperties(response.data.results);
       setTotalPages(response.data.totalPages);
     } catch (error) {

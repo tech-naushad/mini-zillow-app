@@ -6,10 +6,9 @@ const MZPager = ({ page, totalPages, setPage }) => (
     <button
       onClick={() => setPage(page - 1)}
       disabled={page === 1}
-      className={`w-10 h-10 rounded-full flex items-center justify-center 
-        shadow-md text-gray-600 bg-white disabled:opacity-50`}
+     className={`focus:ring-2 focus:ring-gray-300`}
     >
-      ◀
+       
     </button>
 
     {/* Page Numbers */}
@@ -39,7 +38,7 @@ const MZPager = ({ page, totalPages, setPage }) => (
       className={`w-10 h-10 rounded-full flex items-center justify-center 
         shadow-md text-gray-600 bg-white disabled:opacity-50`}
     >
-      ▶
+      
     </button>
   </div>
 );
