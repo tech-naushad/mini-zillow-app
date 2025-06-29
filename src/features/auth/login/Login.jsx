@@ -1,35 +1,43 @@
-import React, { use, useState } from "react";
+import React, { useRef, useState } from "react";
 import apiClient from "../../../api/apiClient";
 import { NavLink } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+const apiBaseUrl = import.meta.env.VITE_AUTH_SERVICE_BASE_URL;
+import { useLoader } from "../../../components/pageLoader/LoaderContext";
+import MZEmailControl from "../../../components/input/MZEmailControl";
+import MZPasswordControl from "../../../components/input/MZPasswordControl";
+import MZButton from "../../../components/button/MZButton";
+
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-const navigate = useNavigate();
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const { showLoader, hideLoader } = useLoader();
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const navigate = useNavigate();
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup Data:", formData);
     try {
+      const formData = {
+        email: emailInputRef.current?.value,
+        password: passwordInputRef.current?.value,
+      };
       const response = await apiClient.post("/users/login", formData, {
-        baseURL: "http://localhost:5000/api/",
+        baseURL: apiBaseUrl,
       });
-      navigate('/');
+
+      // store in sessionStorage (clears on browser/tab close)
+      const token = response.data.token;      
+      sessionStorage.setItem("token", token);
+
+      setMessage({ type: "success", text: "Account created successfully!" });
+      navigate("/");
     } catch (error) {
       console.error("Signup error:", error);
-    } finally {
-      setFormData({
-        email: "",
-        password: "",
+      setMessage({
+        type: "error",
+        text: "Failed to sign up. Please try again.",
       });
     }
   };
@@ -39,53 +47,30 @@ const navigate = useNavigate();
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Create an Account
       </h2>
+      {message.text && <MZMessage type={message.type} message={message.text} />}
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Email */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Password */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
-        >
-          Login
-        </button>
+        <MZEmailControl
+          ref={emailInputRef}
+          inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="you@example.com"
+          labelClass="block mb-1 font-medium text-gray-700"
+          required
+        />
+        <MZPasswordControl
+          ref={passwordInputRef}
+          inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="••••••••"
+          labelClass="block mb-1 font-medium text-gray-700"
+          required
+        />
+        <MZButton label="Login" type="submit" />
       </form>
 
       <p className="text-sm text-gray-600 text-center mt-4">
         Do not have an account?{" "}
-        
         <NavLink to="/auth/signup" className="text-blue-600 hover:underline">
           Sign Up
         </NavLink>
-        
       </p>
     </div>
   );

@@ -6,31 +6,31 @@ import {
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 
-const solutions = [
+const menuItems = [
   {
     name: "Add New Property",
     description:
       "Add New Property lets users list properties with details and images.",
     href: "/property/add",
-    icon: HomeIcon, // 🏠 Suitable for adding a property
+    icon: HomeIcon,  
   },
   {
     name: "View Properties",
     description: "View Properties shows all listings for users to browse.",
     href: "/",
-    icon: EyeIcon, // 👁 Represents viewing
+    icon: EyeIcon,  
   },
   {
     name: "Manage Property Listing",
     description:
       "Manage Property Listing lets admins edit and control property listings.",
     href: "/admin/dashboard",
-    icon: WrenchScrewdriverIcon, // 🛠 Perfect for admin/manage
+    icon: WrenchScrewdriverIcon,   
   },
 ];
  
 
-const NavBarItems = () => {
+const ManagePropertiesItems = () => {
   return (
     <Popover className="relative">
       <PopoverButton className="inline-flex items-center text-sm/6 font-semibold text-gray-900 cursor-pointer focus:outline-none focus:ring-0 focus:border-none">
@@ -42,7 +42,7 @@ const NavBarItems = () => {
       >
         <div className="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm/6 shadow-lg ring-1 ring-gray-900/5">
           <div className="p-4">
-            {solutions.map((item) => (
+            {menuItems.map((item) => (
               <div
                 key={item.name}
                 className="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50"
@@ -77,4 +77,4 @@ const NavBarItems = () => {
   );
 };
 
-export default NavBarItems;
+export default ManagePropertiesItems;

@@ -44,12 +44,12 @@ const PropertyList = () => {
             className="bg-white rounded-xl shadow hover:shadow-md transition p-3"
           >
             <div className="relative">
-             <NavLink to={`/property/details?id=${property?._id}`}>
-              <img
-                src={property?.imageUrl}
-                alt={property?.title}
-                className="w-full h-48 object-cover rounded-lg"
-              />
+              <NavLink to={`/property/details?id=${property?._id}`}>
+                <img
+                  src={property?.imageUrl}
+                  alt={property?.title}
+                  className="w-full h-48 object-cover rounded-lg"
+                />
               </NavLink>
               <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow text-gray-700 hover:text-red-500">
                 <FiHeart />
@@ -89,7 +89,7 @@ const PropertyList = () => {
                   <p className="flex items-center text-yellow-500">
                     {[...Array(5)].map((_, i) => (
                       <FaStar key={i} size={14} />
-                    ))}{" "}
+                    ))}
                     <span className="ml-1 text-gray-700">
                       {property.rating}({property.reviews})
                     </span>

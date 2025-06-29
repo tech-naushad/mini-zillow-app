@@ -1,77 +1,85 @@
-// src/components/Navbar/Navbar.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import NavBarItems from "./NavbarItems";
+import ManagePropertiesMenu from "./ManagePropertiesMenu";
+import UserProfileMenu from "./UserProfileMenu";
+import useJwtValidator from "../../hooks/useJwtValidator";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  
+  const [isLogin, setIsLogin] = useState(false);
+  // const token = sessionStorage.getItem("token");
 
-  //const navItems = ["Buy", "Rent", "Sell", "Home Loans", "Agent Finder"];
+  // if (token === null) {
+  //   setIsLogin(false);
+  // }
+
+ // const { decoded, isValid, isExpired } = useJwtValidator(token);
+
+  // Update isLogin only when token/isValid/isExpired changes
+  // useEffect(() => {
+  //   if (!token) {
+  //     setIsLogin(false);
+  //     return;
+  //   }
+
+  //   if (!isValid || isExpired) {
+  //     setIsLogin(false);
+  //   } else {
+  //     setIsLogin(true);
+  //   }
+  // }, [token, isValid, isExpired]);
 
   return (
     <>
-    <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          <div className="flex-shrink-0 text-blue-600 text-2xl font-bold">
-            <a href="/">Mini-Zillow</a>
-          </div>
+      <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            {/* Logo */}
+            <div className="flex-shrink-0 text-blue-600 text-2xl font-bold">
+              <a href="/">Mini-Zillow</a>
+            </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
-            {/* {navItems.map((item) => (
-              <a
-                key={item}
-                href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                className="text-gray-700 hover:text-blue-600 transition font-medium"
-              >
-                {item}
-              </a>
-            ))} */}
-            <NavBarItems></NavBarItems>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-4">
-            <NavLink
-              to="/auth/login"
-              className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
-            >
-              Sign In
-            </NavLink>
-          </div>
+            {/* Desktop Menu */}
+            <div className="hidden md:flex space-x-6">
+              <ManagePropertiesMenu />
+            </div>
 
-          {/* Mobile Toggle */}
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
-            </button>
+            <div className="hidden md:flex items-center space-x-4">
+              {!isLogin ? (
+                <NavLink
+                  to="/auth/login"
+                  className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                >
+                  Sign In
+                </NavLink>
+              ) : (
+                <UserProfileMenu name={decoded?.name} />
+              )}
+            </div>
+
+            {/* Mobile Toggle */}
+            <div className="md:hidden">
+              <button onClick={() => setIsOpen(!isOpen)}>
+                {isOpen ? <FaTimes size={22} /> : <FaBars size={22} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden px-4 pb-4">
-          <div className="flex flex-col space-y-3">
-            {navItems.map((item) => (
-              <a
-                key={item}
-                href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                className="text-gray-700 hover:text-blue-600 transition font-medium"
-              >
-                {item}
-              </a>
-            ))}            
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden px-4 pb-4">
+            <div className="flex flex-col space-y-3">
+              <ManagePropertiesMenu />
+            </div>
           </div>
-        </div>
-      )}
-    </nav>
+        )}
+      </nav>
       {/* This is where child routes will be rendered */}
       <Outlet />
-      </>
+    </>
   );
 };
 

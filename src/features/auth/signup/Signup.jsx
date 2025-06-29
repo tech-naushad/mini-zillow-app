@@ -1,41 +1,45 @@
-import React, { use, useState } from "react";
+import React, { useState, useRef } from "react";
 import apiClient from "../../../api/apiClient";
 import { NavLink } from "react-router-dom";
-import {
-  LoaderProvider,
-  useLoader,
-} from "../../../components/pageLoader/LoaderContext";
+import { useLoader } from "../../../components/pageLoader/LoaderContext";
+import MZInputControl from "../../../components/input/MZInputControl";
+import MZEmailControl from "../../../components/input/MZEmailControl";
+import MZPasswordControl from "../../../components/input/MZPasswordControl";
+import MZButton from "../../../components/button/MZButton";
+import MZMessage from "../../../components/message/MZMessage";
+const apiBaseUrl = import.meta.env.VITE_AUTH_SERVICE_BASE_URL;
 
 const Signup = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const fullNameInputRef = useRef();
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
   const { showLoader, hideLoader } = useLoader();
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const formRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       showLoader();
+      const formData = {
+        name: fullNameInputRef.current?.value,
+        email: emailInputRef.current?.value,
+        password: passwordInputRef.current?.value,
+      };
       const response = await apiClient.post("/users/register", formData, {
-        baseURL: "http://localhost:5000/api/",
+        baseURL: apiBaseUrl,
       });
+      setMessage({ type: "success", text: "Account created successfully!" });
+      formRef.current.reset();
+      
     } catch (error) {
       console.error("Signup error:", error);
-    } finally {
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
+      setMessage({
+        type: "error",
+        text: "Failed to sign up. Please try again.",
       });
+    } finally {
       hideLoader();
     }
   };
@@ -45,58 +49,31 @@ const Signup = () => {
       <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
         Create an Account
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Your full name"
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
 
-        {/* Email */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Password */}
-        <div>
-          <label className="block mb-1 font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="••••••••"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
-        </div>
-
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
-        >
-          Sign Up
-        </button>
+      {message.text && <MZMessage type={message.type} message={message.text} />}
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+        <MZInputControl
+          ref={fullNameInputRef}
+          inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Your full name"
+          labelClass="block mb-1 font-medium text-gray-700"
+          required
+        />
+        <MZEmailControl
+          ref={emailInputRef}
+          inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="you@example.com"
+          labelClass="block mb-1 font-medium text-gray-700"
+          required
+        />
+        <MZPasswordControl
+          ref={passwordInputRef}
+          inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="••••••••"
+          labelClass="block mb-1 font-medium text-gray-700"
+          required
+        />
+        <MZButton label="Sign Up" type="submit" />
       </form>
 
       <p className="text-sm text-gray-600 text-center mt-4">
