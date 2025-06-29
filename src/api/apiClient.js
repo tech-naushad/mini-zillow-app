@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+const apiBaseUrl = import.meta.env.VITE_PROPERTY_SERVICE_BASE_URL;
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5001/api/' 
+  baseURL: apiBaseUrl //default to property service  
 });
 
 apiClient.interceptors.request.use((config) => {

@@ -46,13 +46,6 @@ const MZFileUpload = (props) => {
           />
 
           <div className="flex justify-between gap-4">
-            {/* <button
-              onClick={handleUpload}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
-            >
-              Upload
-            </button> */}
-
             <button
               onClick={handleReupload}
               className="flex items-center justify-center gap-2 flex-1 border border-gray-300 py-2 px-4 rounded-lg text-gray-700 hover:bg-gray-100 transition"
