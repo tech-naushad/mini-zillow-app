@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import apiClient from "../../../../api/apiClient";
-import { useLoader } from "../../../../components/pageLoader/LoaderContext";
-import Property from "../../components/Property";
-import MZPager from "../../../../components/pager/MZPager";
+import React, { use, useState, useEffect } from "react";
+import apiClient from "../../../api/apiClient";
+import { useLoader } from "../../../components/pageLoader/LoaderContext";
+import Property from "../../property/components/Property";
+import MZPager from "../../../components/pager/MZPager";
 
-const PropertyList = () => {
+const ManageListing = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,19 +32,17 @@ const PropertyList = () => {
 
   return (
     <div>
-      <div className="max-w-7xl pl-0 pr-4 sm:pr-6 lg:pr-8 mt-10">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          Property Listing
-        </h2>
-      </div>
+      <h2 className="text-2xl font-semibold mb-4">Explore Properties</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {properties.map((property) => (
-          <Property key={property.id} property={property} />
+          <Property key={property.id} property={property} showDelete="true"  />
+          
         ))}
+         
       </div>
       <MZPager page={page} totalPages={totalPages} setPage={setPage} />
     </div>
   );
 };
 
-export default PropertyList;
+export default ManageListing;

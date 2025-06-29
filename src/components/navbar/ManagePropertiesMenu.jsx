@@ -24,7 +24,7 @@ const menuItems = [
     name: "Manage Property Listing",
     description:
       "Manage Property Listing lets admins edit and control property listings.",
-    href: "/admin/dashboard",
+    href: "/admin",
     icon: WrenchScrewdriverIcon,   
   },
 ];

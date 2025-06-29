@@ -4,36 +4,17 @@ import { NavLink } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import ManagePropertiesMenu from "./ManagePropertiesMenu";
 import UserProfileMenu from "./UserProfileMenu";
-import useJwtValidator from "../../hooks/useJwtValidator";
+import useJwtValidator from "../../hooks/useMZAuth";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);  
+  const [isOpen, setIsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
-  // const token = sessionStorage.getItem("token");
-
-  // if (token === null) {
-  //   setIsLogin(false);
-  // }
-
- // const { decoded, isValid, isExpired } = useJwtValidator(token);
-
-  // Update isLogin only when token/isValid/isExpired changes
-  // useEffect(() => {
-  //   if (!token) {
-  //     setIsLogin(false);
-  //     return;
-  //   }
-
-  //   if (!isValid || isExpired) {
-  //     setIsLogin(false);
-  //   } else {
-  //     setIsLogin(true);
-  //   }
-  // }, [token, isValid, isExpired]);
+  const token = sessionStorage.getItem("token");
+   const { decoded, isValid, isExpired } = useJwtValidator(token);
 
   return (
     <>
-      <nav className="bg-white border-b shadow-sm sticky top-0 z-50">
+      <nav className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             {/* Logo */}
@@ -47,7 +28,7 @@ const Navbar = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              {!isLogin ? (
+              {decoded ===null ? (
                 <NavLink
                   to="/auth/login"
                   className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
@@ -58,6 +39,15 @@ const Navbar = () => {
                 <UserProfileMenu name={decoded?.name} />
               )}
             </div>
+
+            {/* <div className="hidden md:flex items-center space-x-4">
+              <NavLink
+                to="/auth/login"
+                className="relative text-blue-600 hover:text-blue-800 transition-colors duration-200"
+              >
+                {decoded === null ? "Sign In" : decoded?.name}
+              </NavLink>
+            </div> */}
 
             {/* Mobile Toggle */}
             <div className="md:hidden">

@@ -20,7 +20,7 @@ const menuItems = [
 const UserProfileItems = (props) => {
 
   const handleClick = (e)=>{
-    debugger
+    sessionStorage.removeItem("token");
   }
   
   return (

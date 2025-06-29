@@ -2,7 +2,7 @@ services:
   - type: web
     name: mini-zillow-react-app
     env: static
-    rootDir: .             # Change to `frontend` if in subfolder
+    rootDir: .            
     buildCommand: npm run build
     staticPublishPath: dist
     branch: main

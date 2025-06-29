@@ -1,11 +1,14 @@
 import React, { useState, useRef } from "react";
-import { FaDollarSign, FaBed, FaBath, FaExpand } from "react-icons/fa";
 import MZFileUpload from "../../../../components/fileUpload/MZFileUpload";
 import MZInput from "../../../../components/numberInput/MZInput";
-import apiClient from "../../../../api/apiClient";  
+import apiClient from "../../../../api/apiClient";
+import MZInputControl from "../../../../components/input/MZInputControl";
+import MZButton from "../../../../components/button/MZButton";
+import MZMessage from "../../../../components/message/MZMessage";
+import { useLoader } from "../../../../components/pageLoader/LoaderContext";
 
 const AddProperty = () => {
-  const [formData, setFormData] = useState({ price: "", baths: "" });
+  const [setFormData] = useState({ price: "", baths: "" });
   const [file, setFile] = useState(null);
   const titleInputRef = useRef();
   const streetAddressInputRef = useRef();
@@ -15,19 +18,17 @@ const AddProperty = () => {
   const bedsInputRef = useRef();
   const bathsInputRef = useRef();
   const priceInputRef = useRef();
-
-  const handleInputChange = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const formRef = useRef();
+  const [message, setMessage] = useState({ text: "", type: "" });
+  const { showLoader, hideLoader } = useLoader();
 
   const handleFileSelected = (file) => {
     setFile(file);
   };
 
-  const AddProperty = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     var propertyDetails = {
       title: titleInputRef.current.value,
       streetAddress: streetAddressInputRef.current.value,
@@ -42,140 +43,142 @@ const AddProperty = () => {
     const formData = new FormData();
     formData.append("propertyDetails", JSON.stringify(propertyDetails)); //
     formData.append("file", file);
-
-    const createProperty = async () => {
-      try {
-        const response = await apiClient.post("/properties", formData);
-        console.log(response.data);
-      } catch (error) {
-        console.error("Request failed:", error);
-      }
-    };
-    createProperty();
+    try {
+      showLoader();
+      const response = await apiClient.post("/properties", formData);
+      setMessage({ type: "success", text: "Property added successfully!" });
+    } catch (error) {
+      console.error("Request failed:", error);
+      setMessage({
+        type: "error",
+        text: "Failed to add property. Please try again.",
+      });
+    } finally {
+      hideLoader();
+      formRef.current.reset();
+    }
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col justify-between">
+    <div className="bg-gray-50 flex flex-col justify-between mt-10">
       {/* Header */}
       <div className="px-6 flex justify-between items-center">
         <h2 className="text-xl font-semibold">
           First, let’s add your property
         </h2>
-        <div className="flex items-center">
-          <button className="w-12 h-6 bg-gray-200 rounded-full flex items-center justify-between px-1">
-            <span className="w-4 h-4 bg-white rounded-full shadow"></span>
-          </button>
-        </div>
       </div>
       {/* Main Content */}
       <div className="flex flex-col md:flex-row gap-6 px-6 mt-2"></div>{" "}
-      <div className="flex flex-col md:flex-row gap-6 px-6">
-        {/* Upload Image Card */}
-        <div className="bg-white p-4 rounded shadow-md flex-1">
-          <MZFileUpload
-            title={"Add your property image here"}
-            instruction={
-              "Supports JPG, PNG and MP4 videos. Max file size : 10MB."
-            }
-            onFileSelected={handleFileSelected}
-          ></MZFileUpload>
+      <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col md:flex-row gap-6 px-6">
+          {/* Upload Image */}
+          <div className="bg-white p-4 rounded shadow-md flex-1">
+            <MZFileUpload
+              title={"Add your property image here"}
+              instruction={
+                "Supports JPG, PNG and MP4 videos. Max file size : 10MB."
+              }
+              onFileSelected={handleFileSelected}
+            />
+          </div>
+
+          {/* Property Details Form */}
+
+          <div className="bg-white p-6 rounded shadow-md flex-1">
+            <div className="mb-4">
+              {message.text && (
+                <MZMessage type={message.type} message={message.text} />
+              )}
+
+              <MZInputControl
+                ref={titleInputRef}
+                inputClass="w-full border rounded px-3 py-2"
+                placeholder="Property Title"
+                labelClass="block font-medium mb-1"
+                required
+                title="Title"
+              />
+            </div>
+            <div className="mb-4">
+              <MZInputControl
+                ref={streetAddressInputRef}
+                inputClass="w-full border rounded px-3 py-2"
+                placeholder="Street Address"
+                labelClass="block font-medium mb-1"
+                required
+                title="Street Address"
+              />
+            </div>
+            <div className="mb-4">
+              <MZInputControl
+                ref={propertyTypeInputRef}
+                inputClass="w-full border rounded px-3 py-2"
+                placeholder="Street Address"
+                labelClass="block font-medium mb-1"
+                required
+                title="Street Address"
+              />
+            </div>
+            <div className="mb-4">
+              <MZInputControl
+                ref={unitDetailsInputRef}
+                inputClass="w-full border rounded px-3 py-2"
+                placeholder="Unit Details"
+                labelClass="block font-medium mb-1"
+                required
+                title="Unit Details"
+              />
+            </div>
+            <div className="flex gap-4 mb-4">
+              <div className="flex-1">
+                <MZInput
+                  type="number"
+                  ref={sizeInputRef}
+                  name="size"
+                  label="Size:"
+                  min={60}
+                  max={200}
+                  placeholder="Size (sqft) :"
+                  className="w-full outline-none"
+                />
+              </div>
+
+              <div className="flex-1">
+                <MZInput
+                  type="number"
+                  ref={bedsInputRef}
+                  name="Beds"
+                  label="Beds:"
+                  placeholder="Total Beds :"
+                  className="w-full outline-none"
+                />
+              </div>
+
+              <div className="flex-1">
+                <MZInput
+                  type="number"
+                  ref={bathsInputRef}
+                  name="baths"
+                  label="Baths:"
+                  placeholder="Total Baths :"
+                  className="w-full outline-none"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <MZInput
+                type="number"
+                name="price"
+                ref={priceInputRef}
+                label="Price"
+                placeholder="Price :"
+                className="w-full outline-none"
+              />
+            </div>
+            <MZButton label="Sign Up" type="submit" />
+          </div>
         </div>
-
-        {/* Property Details Form */}
-        <div className="bg-white p-6 rounded shadow-md flex-1">
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Title:</label>
-            <input
-              type="text"
-              ref={titleInputRef}
-              placeholder="Property Title :"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Street Address:</label>
-            <input
-              type="text"
-              ref={streetAddressInputRef}
-              placeholder="Street Address :"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Property type:</label>
-            <input
-              type="text"
-              ref={propertyTypeInputRef}
-              placeholder="Property type :"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block font-medium mb-1">Unit Details:</label>
-            <input
-              type="text"
-              ref={unitDetailsInputRef}
-              label="Unit Details:"
-              placeholder="Unit Details :"
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
-          <div className="flex gap-4 mb-4">
-            <div className="flex-1">
-              <MZInput
-                type="number"
-                ref={sizeInputRef}
-                name="size"
-                label="Size:"
-                min={60}
-                max={200}
-                placeholder="Size (sqft) :"
-                className="w-full outline-none"
-              />
-            </div>
-
-            <div className="flex-1">
-              <MZInput
-                type="number"
-                ref={bedsInputRef}
-                name="Beds"
-                label="Beds:"
-                placeholder="Total Beds :"
-                className="w-full outline-none"
-              />
-            </div>
-
-            <div className="flex-1">
-              <MZInput
-                type="number"
-                ref={bathsInputRef}
-                name="baths"
-                label="Baths:"
-                placeholder="Total Baths :"
-                className="w-full outline-none"
-              />
-            </div>
-          </div>
-
-          <div className="mb-4">
-            <MZInput
-              type="number"
-              name="price"
-              ref={priceInputRef}
-              label="Price"
-              placeholder="Price :"
-              className="w-full outline-none"
-            />
-          </div>
-
-          <button
-            className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-            onClick={AddProperty}
-          >
-            Add Property
-          </button>
-        </div>
-      </div>
+      </form>
     </div>
   );
 };
