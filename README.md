@@ -1,3 +1,6 @@
+# 🏠 Application live url
+https://mini-zillow-react-app.onrender.com/
+
 # 🏠 Mini-Zillow-App
 
 A full-stack real estate platform inspired by Zillow — allowing users to list, browse, and manage the properties. Built with **React.js**, **TailwindCSS**, **Node.js/Express**, **MongoDB**, and **JWT Auth**.
