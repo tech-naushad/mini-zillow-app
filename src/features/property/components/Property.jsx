@@ -15,7 +15,7 @@ const Property = ({ property, showDelete = false }) => {
       showLoader();
       const response = await apiClient.delete(`/properties/${id}`, {});
       setMessage({ type: "success", text: "Property deleted successfully!" });
-      window.location.reload();
+      window.location.href = "/admin/managelisting";
     } catch (error) {
       console.error("error:", error);
       setMessage({

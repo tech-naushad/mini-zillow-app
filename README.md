@@ -37,3 +37,16 @@ A full-stack real estate platform inspired by Zillow — allowing users to list,
    - Admin can delete the proprty.
  
    - User can see the listing created by him/her under Menu UserPorfile->My Lisening
+
+## 🚀 Solution Details
+
+ - Features -  All the core modules
+ - Hooks  -  reusable code such as Auth manager
+ - Components -  Gneric UI components such as buttons, etc 
+ - Rest all self-explainatory
+
+## 🚀 Feature scops
+
+ - Rating functionality can be fully developed
+ - Testing can be adde 
+ - UI can be made more professional
