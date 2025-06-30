@@ -113,7 +113,7 @@ const AddProperty = () => {
               <MZInputControl
                 ref={propertyTypeInputRef}
                 inputClass="w-full border rounded px-3 py-2"
-                placeholder="Street Address"
+                placeholder="property type"
                 labelClass="block font-medium mb-1"
                 required
                 title="Property Type"
@@ -175,7 +175,7 @@ const AddProperty = () => {
                 className="w-full outline-none"
               />
             </div>
-            <MZButton label="Sign Up" type="submit" />
+            <MZButton label="Add Property" type="submit" />
           </div>
         </div>
       </form>
