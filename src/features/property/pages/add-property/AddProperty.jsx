@@ -116,7 +116,7 @@ const AddProperty = () => {
                 placeholder="Street Address"
                 labelClass="block font-medium mb-1"
                 required
-                title="Street Address"
+                title="Property Type"
               />
             </div>
             <div className="mb-4">
