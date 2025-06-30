@@ -54,6 +54,8 @@ const Login = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <MZEmailControl
           ref={emailInputRef}
+          title = "Email"
+          name = "email"
           inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="you@example.com"
           labelClass="block mb-1 font-medium text-gray-700"
@@ -64,6 +66,8 @@ const Login = () => {
           inputClass="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="••••••••"
           labelClass="block mb-1 font-medium text-gray-700"
+          title = "password"
+          name = "password"
           required
         />
         <MZButton label="Login" type="submit" />
