@@ -50,3 +50,33 @@ A full-stack real estate platform inspired by Zillow — allowing users to list,
  - Rating functionality can be fully developed
  - Testing can be adde 
  - UI can be made more professional
+
+## 🚀 High level Layered Architecture
+mini-zillow-app/
+├── public/                          # Static assets (index.html, icons, etc.)
+├── src/
+│   ├── assets/                      # Images, logos, CSS, etc.
+│   ├── components/                  # Reusable UI components (Card, Button, Header, Loader, etc.)
+│   ├── features/
+│   │   ├── auth/                    # LoginForm, RegisterForm, auth logic
+│   │   ├── property/                # PropertyList, PropertyCard, PropertyDetail, create/edit components
+│   │   └── admin/                   # Listing management tools, dashboard components
+│   ├── api/                         # Axios client instance, API calls (property, auth services)
+│   ├── hooks/                       # Custom hooks (useAuth, useFetchProperties, usePagination)
+│   ├── utils/                       # Helpers (formatting, validation, constants)
+│   ├── App.jsx                      # Main application component with Router
+│   └── main.jsx                     # React entry point and render to DOM
+├── vite.config.js
+└── package.json
+
+📚 Layer Breakdown
+Layer	Content
+Assets	public/, src/assets/ — static files and media
+Presentation/UI	src/components/ — reusable, styled React UI components
+Pages	src/pages/ — route-focused views combining components
+Features	src/features/ — domain-specific logic for auth, property, admin
+API Layer	src/api/ — Axios configuration and services for backend calls
+Hooks	src/hooks/ — custom reusable logic encapsulation
+Utilities	src/utils/ — helper and validation functions
+Entry-point	main.jsx and App.jsx — bootstrap and top-level logic
+
